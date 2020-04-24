@@ -1,0 +1,6 @@
+#ifndef CREATIVEXX_CREATIVEXX_H
+#define CREATIVEXX_CREATIVEXX_H
+
+#include "../src/core.h"
+
+#endif //CREATIVEXX_CREATIVEXX_H
