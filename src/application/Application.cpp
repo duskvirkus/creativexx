@@ -1,6 +1,9 @@
 #include "Application.h"
 
-namespace Creative {
+namespace creative {
+
+    Application::Application() :
+            m_looping(true) {}
 
     void Application::setup() {
         std::cout << "Setup" << '\n';
@@ -12,6 +15,14 @@ namespace Creative {
 
     void Application::draw() {
         std::cout << "Draw" << '\n';
+    }
+
+    void Application::loop(bool looping) {
+        m_looping = looping;
+    }
+
+    bool Application::looping() const {
+        return m_looping;
     }
 
 }

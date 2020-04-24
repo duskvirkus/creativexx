@@ -1,11 +1,18 @@
-#include <CreativeXX.h>
+#include "Sandbox.h"
 
-class Sandbox : public Creative::Application {
-public:
-    Sandbox() {}
-    ~Sandbox() {}
-};
+void Sandbox::setup() {
+    LOG_INFO("In Setup")
+}
 
-Creative::Application* createApplication() {
+void Sandbox::update() {
+    LOG_INFO("In Update")
+}
+
+void Sandbox::draw() {
+    LOG_INFO("In Draw")
+    loop(false);
+}
+
+creative::Application *create_application() {
     return new Sandbox();
 }
