@@ -2,9 +2,15 @@
 add_library(
         CreativeXX
         SHARED
-        Core/Entry.h
-        Application/Application.cpp
-        Application/Application.h
+        application/Application.cpp
+        application/Application.h
+        core/entry.h
+        core/init.cpp
+        core/init.h
+        log/log.cpp
+        log/log.h
+        log/Logger.cpp
+        log/Logger.h
         )
 
 target_include_directories(CreativeXX PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/../include")
