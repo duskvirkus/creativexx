@@ -47,6 +47,7 @@ _deps
 # ide
 .idea
 .cbp
+cmake-build-debug
 
 # output dirs
 bin
