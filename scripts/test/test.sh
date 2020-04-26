@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-while [[ $# -gt 0 ]]
+while [ $# -gt 0 ]
 do
 key="$1"
 shift
@@ -27,7 +27,7 @@ fi
 cd "$CMAKE_DIR"
 
 cmake ..
-make
+make -j4
 
 cd ../bin/test
 
