@@ -14,6 +14,29 @@ add_library(
         window/Window.h
         window/LinuxWindow.cpp
         window/LinuxWindow.h
+        event/Event.cpp
+        event/Event.h
+        event/EventType.h
+        event/KeyEvent.cpp
+        event/KeyEvent.h
+        event/KeyReleasedEvent.cpp
+        event/KeyReleasedEvent.h
+        event/KeyPressedEvent.cpp
+        event/KeyPressedEvent.h
+        event/MouseButtonEvent.cpp
+        event/MouseButtonEvent.h
+        event/WindowClosedEvent.cpp
+        event/WindowClosedEvent.h
+        event/WindowResizedEvent.cpp
+        event/WindowResizedEvent.h
+        event/MouseButtonPressedEvent.cpp
+        event/MouseButtonPressedEvent.h
+        event/MouseButtonReleasedEvent.cpp
+        event/MouseButtonReleasedEvent.h
+        event/MouseMovedEvent.cpp
+        event/MouseMovedEvent.h
+        event/MouseScrolledEvent.cpp
+        event/MouseScrolledEvent.h
         )
 
 target_include_directories(CreativeXX INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/../include")
