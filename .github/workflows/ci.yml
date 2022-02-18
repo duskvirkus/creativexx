@@ -17,6 +17,13 @@ jobs:
       with:
         submodules: true
 
+    - uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
     - name: ubuntu_requirements
       run: sh ${{github.workspace}}/scripts/linux/ubuntu-install.sh
 
@@ -25,6 +32,16 @@ jobs:
 
     - name: format
       run: python3 ${{github.workspace}}/cli/cli.py --verbose --ci format
+
+    - name: submodule_info
+      run: git submodule status > ${{github.workspace}}/submodule_info.txt
+
+    - name: cache_pytorch
+      id: cache-pytorch
+      uses: actions/cache@v2
+      with:
+        path: ${{github.workspace}}/vendor/pytorch
+        key: ${{ runner.os }}-${{ hashFiles('${{github.workspace}}/submodule_info.txt') }}
 
     - name: pytorch_requirements
       working-directory: ${{github.workspace}}/vendor/pytorch
