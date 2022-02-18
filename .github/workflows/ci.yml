@@ -19,7 +19,7 @@ jobs:
         submodules: true
 
     - name: ubuntu_requirements
-      run: sh ${{github.workspace}}/scripts/linux/ubuntu.sh
+      run: sh ${{github.workspace}}/scripts/linux/ubuntu-install.sh
 
     - name: python_requirements
       run: pip3 install -r requirements.txt
