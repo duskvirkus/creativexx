@@ -31,16 +31,16 @@ jobs:
         working-directory: ${{github.workspace}}/vendor/pytorch
     steps:
     - name: python_requirements
-      run: pip3 install -r requirements.txt
+      run: which bash && python3 --version && pip3 install -r requirements.txt
     - name: build
-      run: which bash && python setup.py develop
+      run: python3 setup.py develop
   
   format:
     runs-on: ubuntu-latest
     needs: [setup]
     steps:
     - name: format
-      run: python ${{github.workspace}}/cli/cli.py --verbose --ci format
+      run: python3 ${{github.workspace}}/cli/cli.py --verbose --ci format
 
   build:
     runs-on: ubuntu-latest
@@ -52,12 +52,12 @@ jobs:
     needs: [setup, pytorch]
     steps:
     - name: build
-      run: python ${{github.workspace}}/cli/cli.py --verbose --ci build
+      run: python3 ${{github.workspace}}/cli/cli.py --verbose --ci build
 
   test:
     runs-on: ubuntu-latest
     needs: [build]
     steps:
     - name: test
-      run: python ${{github.workspace}}/cli/cli.py --verbose --ci all_tests
+      run: python3 ${{github.workspace}}/cli/cli.py --verbose --ci all_tests
       
