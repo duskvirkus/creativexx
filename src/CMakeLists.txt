@@ -2,41 +2,41 @@
 add_library(
         creativexx
         SHARED
-        application/Application.cpp
-        application/Application.h
-        core/entry.h
-        core/init.cpp
-        core/init.h
-        log/Log.cpp
-        log/Log.h
-        log/Logger.cpp
-        log/Logger.h
-        window/Window.h
-        window/LinuxWindow.cpp
-        window/LinuxWindow.h
-        event/Event.cpp
-        event/Event.h
-        event/EventType.h
-        event/KeyEvent.cpp
-        event/KeyEvent.h
-        event/KeyReleasedEvent.cpp
-        event/KeyReleasedEvent.h
-        event/KeyPressedEvent.cpp
-        event/KeyPressedEvent.h
-        event/MouseButtonEvent.cpp
-        event/MouseButtonEvent.h
-        event/WindowClosedEvent.cpp
-        event/WindowClosedEvent.h
-        event/WindowResizedEvent.cpp
-        event/WindowResizedEvent.h
-        event/MouseButtonPressedEvent.cpp
-        event/MouseButtonPressedEvent.h
-        event/MouseButtonReleasedEvent.cpp
-        event/MouseButtonReleasedEvent.h
-        event/MouseMovedEvent.cpp
-        event/MouseMovedEvent.h
-        event/MouseScrolledEvent.cpp
-        event/MouseScrolledEvent.h
+        application/Application.cxx
+        application/Application.hxx
+        core/entry.hxx
+        core/init.cxx
+        core/init.hxx
+        log/Log.cxx
+        log/Log.hxx
+        log/Logger.cxx
+        log/Logger.hxx
+        window/Window.hxx
+        window/LinuxWindow.cxx
+        window/LinuxWindow.hxx
+        event/Event.cxx
+        event/Event.hxx
+        event/EventType.hxx
+        event/KeyEvent.cxx
+        event/KeyEvent.hxx
+        event/KeyReleasedEvent.cxx
+        event/KeyReleasedEvent.hxx
+        event/KeyPressedEvent.cxx
+        event/KeyPressedEvent.hxx
+        event/MouseButtonEvent.cxx
+        event/MouseButtonEvent.hxx
+        event/WindowClosedEvent.cxx
+        event/WindowClosedEvent.hxx
+        event/WindowResizedEvent.cxx
+        event/WindowResizedEvent.hxx
+        event/MouseButtonPressedEvent.cxx
+        event/MouseButtonPressedEvent.hxx
+        event/MouseButtonReleasedEvent.cxx
+        event/MouseButtonReleasedEvent.hxx
+        event/MouseMovedEvent.cxx
+        event/MouseMovedEvent.hxx
+        event/MouseScrolledEvent.cxx
+        event/MouseScrolledEvent.hxx
         )
 
 target_include_directories(creativexx INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/../include")
