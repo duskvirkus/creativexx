@@ -14,22 +14,18 @@ pip install requirements.txt
 python setup.py develop
 ```
 
-#### Setup Git Hooks
-
 ```bash
 ./scripts/linux/hooks.sh
 ```
-
-##### Ubuntu
 
 ```bash
 ./scripts/linux/ubuntu-install.sh
 ```
 
-### Building the Project
+## cli
 
-```bash
-python scripts/build.py
-# options
-python scripts/build.py --help
+Use the cli to build project, run tests, and assist in development.
+
+```
+python cli/cli.py --help
 ```
