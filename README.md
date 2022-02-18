@@ -9,7 +9,7 @@ git clone --recursive https://github.com/duskvirkus/creativexx.git
 conda create -n creativexx python=3.8
 conda activate creativexx
 cd vendor/pytorch
-pip install requirements.txt
+pip install -r requirements.txt
 # this step will take awhile it's compiling pytorch
 python setup.py develop
 ```

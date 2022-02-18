@@ -132,18 +132,34 @@ def format(
 
 @cli.command()
 @click.pass_context
+@click.option(
+    '--ci',
+    is_flag=True,
+    help='Run as continuous integration test.',
+)
 def all_tests(
     ctx,
+    ci
 ):
     test_dir = os.path.join(ctx.obj['PROJECT_ROOT'], 'bin', 'test')
-    
+
+    tests = []
     for _, _, files in os.walk(test_dir):
-        for test in files:
-            test_path = os.path.join(test_dir, test)
-            if ctx.obj['VERBOSE']:
-                print(f'Running {test} from {test_path}')
-            for out in execute(test_path):
-                print(out, end="")
+        tests.extend(files)
+
+    if ci:
+        incompatible = ['LinuxWindow.spec']
+        if ctx.obj['VERBOSE']:
+            print(f'Running in ci mode removing tests because they require a desktop to run. {incompatible}')
+
+        tests = filter(lambda t: incompatible.count(t) <= 0, tests)
+
+    for test in tests:
+        test_path = os.path.join(test_dir, test)
+        if ctx.obj['VERBOSE']:
+            print(f'Running {test} from {test_path}')
+        for out in execute(test_path):
+            print(out, end="")
 
     
 if __name__ == '__main__':
