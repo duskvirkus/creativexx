@@ -38,9 +38,9 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ${{github.workspace}}/vendor/pytorch
-        key: ${{ runner.os }}-${{ hashFiles( ${{ github.workspace }}/vendor/submodule_info.txt) }}
+        key: ${{ runner.os }}-${{ hashFiles('**/submodule_info.txt') }}
         restore-keys: |
-          ${{ runner.os }}-${{ hashFiles( ${{ github.workspace }}/vendor/submodule_info.txt) }}
+          ${{ runner.os }}-${{ hashFiles('**/submodule_info.txt') }}
 
     - name: change_permissions
       run: sudo chmod a+w /usr/local/lib/python3.8/dist-packages/
