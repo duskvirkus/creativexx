@@ -33,17 +33,14 @@ jobs:
     - name: format
       run: python3 ${{github.workspace}}/cli/cli.py --verbose --ci format
 
-    - name: submodule_info
-      run: git submodule status > ${{github.workspace}}/submodule_info.txt
-
     - name: cache_pytorch
       id: cache-pytorch
       uses: actions/cache@v2
       with:
         path: ${{github.workspace}}/vendor/pytorch
-        key: ${{ runner.os }}-${{ hashFiles(git submodule status) }}
+        key: ${{ runner.os }}-${{ hashFiles(${{github.workspace}}/vendor/submodule_info.txt) }}
         restore-keys: |
-          ${{ runner.os }}-${{ hashFiles(git submodule status) }}
+          ${{ runner.os }}-${{ hashFiles(${{github.workspace}}/vendor/submodule_info.txt) }}
 
     - name: change_permissions
       run: sudo chmod a+w /usr/local/lib/python3.8/dist-packages/
@@ -54,7 +51,7 @@ jobs:
 
     - name: pytorch_build
       working-directory: ${{github.workspace}}/vendor/pytorch
-      run: USE_CUDA=0 python3 setup.py develop
+      run: USE_CUDA=0 USE_FBGEMM=0 USE_NNPACK=0 USE_QNNPACK=0 USE_XNNPACK=0 python3 setup.py develop
   
     - name: build
       run: python3 ${{github.workspace}}/cli/cli.py --verbose --ci build
