@@ -5,35 +5,37 @@
 
 #include "Logger.h"
 
-namespace creative::log {
+namespace creative {
+    namespace log {
 
-    class Log {
+        class Log {
 
-    public:
-        Log() = default;
+        public:
+            Log() = default;
 
-        Log(const Log &) = delete;
+            Log(const Log &) = delete;
 
-        Log(const Log &&) = delete;
+            Log(const Log &&) = delete;
 
-        Log &operator=(const Log &) = delete;
+            Log &operator=(const Log &) = delete;
 
-        Log &operator=(const Log &&) = delete;
+            Log &operator=(const Log &&) = delete;
 
-        ~Log() = default;
+            ~Log() = default;
 
-        static std::shared_ptr<Logger> &get_creative_logger();
+            static std::shared_ptr<Logger> &get_creative_logger();
 
-        static std::shared_ptr<Logger> &get_masterpiece_logger();
+            static std::shared_ptr<Logger> &get_masterpiece_logger();
 
-    private:
+        private:
 
-        static std::shared_ptr<Logger> s_creative_logger;
+            static std::shared_ptr<Logger> s_creative_logger;
 
-        static std::shared_ptr<Logger> s_masterpiece_logger;
+            static std::shared_ptr<Logger> s_masterpiece_logger;
 
-    };
+        };
 
+    }
 }
 
 #define CREATIVE_TRACE(...) creative::log::Log::get_creative_logger()->trace(__VA_ARGS__);

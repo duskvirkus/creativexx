@@ -4,3 +4,6 @@
 [submodule "vendor/pytorch"]
 	path = vendor/pytorch
 	url = https://github.com/pytorch/pytorch.git
+[submodule "vendor/string-view-lite"]
+	path = vendor/string-view-lite
+	url = https://github.com/martinmoene/string-view-lite.git

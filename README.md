@@ -24,18 +24,12 @@ python setup.py develop
 
 ```bash
 ./scripts/linux/ubuntu-install.sh
+```
 
 ### Building the Project
 
-You could use an editor that supports CMake like CLion or vscode but if not here's how to do it from the terminal.
-
 ```bash
-# in root directory of project
-mkdir cmake-build-debug
-cd cmake-build-debug
-cmake ..
-make -j4
-cd ..
+python scripts/build.py
+# options
+python scripts/build.py --help
 ```
-
-The library is in /lib and binaries are in /bin.

@@ -6,12 +6,12 @@ import shutil
 
 def get_build_dir():
     file_path = os.path.abspath(__file__)
-    build_dir = os.path.abspath(os.path.join(file_path, '..', '..', '..', 'cmake_build'))
+    build_dir = os.path.abspath(os.path.join(file_path, '..', '..', 'build'))
     return build_dir
 
 def get_pytorch_dir():
     file_path = os.path.abspath(__file__)
-    build_dir = os.path.abspath(os.path.join(file_path, '..', '..', '..', 'vendor', 'pytorch'))
+    build_dir = os.path.abspath(os.path.join(file_path, '..', '..', 'vendor', 'pytorch'))
     return build_dir
 
 def execute(cmd):

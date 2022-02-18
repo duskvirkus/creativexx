@@ -46,3 +46,4 @@ target_link_libraries(creativexx PRIVATE glfw)
 target_link_libraries(creativexx PUBLIC "${TORCH_LIBRARIES}")
 
 target_include_directories(creativexx PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/../vendor/glfw/include")
+target_include_directories(creativexx PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/../vendor/string-view-lite/include")
