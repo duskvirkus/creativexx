@@ -28,18 +28,21 @@ jobs:
       run: cd ${{github.workspace}}/vendor/pytorch && pip3 install requirements.txt && python setup.py develop && cd ${{github.workspace}}
 
   format:
+    runs-on: ubuntu-latest
     needs: [setup]
     steps:
     - name: format
       run: cd ${{github.workspace}} && python cli/cli.py --verbose --ci format
 
   build:
+    runs-on: ubuntu-latest
     needs: [setup]
     steps:
     - name: build
       run: cd ${{github.workspace}} && python cli/cli.py --verbose --ci build
 
   test:
+    runs-on: ubuntu-latest
     needs: [setup, build]
     steps:
     - name: test
