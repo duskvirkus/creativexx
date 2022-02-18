@@ -10,7 +10,7 @@ env:
   BUILD_TYPE: Debug
 
 jobs:
-  build:
+  setup:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,21 +18,30 @@ jobs:
       with:
         submodules: true
 
+    - name: ubuntu_requirements
+      run: ./scripts/linux/ubuntu.sh
+
+    - name: python_requirements
+      run: pip3 install -r requirements.txt
+
     - name: build_pytorch
-      run: cd ${{github.workspace}}/vendor/pytorch && pip3 install requirements.txt && python setup.py develop
+      run: cd ${{github.workspace}}/vendor/pytorch && pip3 install requirements.txt && python setup.py develop && cd ${{github.workspace}}
 
-    - name: install_python_requirements
-      run: cd ${{github.workspace}} && pip3 install -r requirements.txt
-
+  format:
+    needs: [setup]
+    steps:
     - name: format
-      needs: [build_pytorch, install_python_requirements]
       run: cd ${{github.workspace}} && python cli/cli.py --verbose --ci format
 
+  build:
+    needs: [setup]
+    steps:
     - name: build
-      needs: [build_pytorch, install_python_requirements]
       run: cd ${{github.workspace}} && python cli/cli.py --verbose --ci build
 
+  test:
+    needs: [setup, build]
+    steps:
     - name: test
-      needs: [build_pytorch, install_python_requirements, build]
       run: cd ${{github.workspace}} && python cli/cli.py --verbose --ci all_tests
       
