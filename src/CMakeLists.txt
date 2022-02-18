@@ -1,6 +1,6 @@
 
 add_library(
-        CreativeXX
+        creativexx
         SHARED
         application/Application.cpp
         application/Application.h
@@ -39,7 +39,10 @@ add_library(
         event/MouseScrolledEvent.h
         )
 
-target_include_directories(CreativeXX INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/../include")
+target_include_directories(creativexx INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/../include")
 
-target_link_libraries(CreativeXX PRIVATE glfw)
-target_include_directories(CreativeXX PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/../vendor/glfw/include")
+target_link_libraries(creativexx PRIVATE glfw)
+
+target_link_libraries(creativexx PUBLIC "${TORCH_LIBRARIES}")
+
+target_include_directories(creativexx PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/../vendor/glfw/include")

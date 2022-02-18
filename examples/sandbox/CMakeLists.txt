@@ -5,4 +5,4 @@ add_executable(
         src/Sandbox.h
         )
 
-target_link_libraries(Sandbox PRIVATE CreativeXX)
+target_link_libraries(Sandbox PRIVATE creativexx)
