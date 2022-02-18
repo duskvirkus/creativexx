@@ -11,6 +11,8 @@ add_library(
         log/Log.hxx
         log/Logger.cxx
         log/Logger.hxx
+        math/interpolate.cxx
+        math/interpolate.hxx
         renderer/texture.cxx
         renderer/texture.hxx
         window/Window.hxx
