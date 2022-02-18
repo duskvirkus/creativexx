@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  BUILD_TYPE: Debug
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+
+    - name: build_pytorch
+      run: cd ${{github.workspace}}/vendor/pytorch && pip3 install requirements.txt && python setup.py develop
+
+    - name: install_python_requirements
+      run: cd ${{github.workspace}} && pip3 install -r requirements.txt
+
+    - name: format
+      needs: [build_pytorch, install_python_requirements]
+      run: cd ${{github.workspace}} && python cli/cli.py --verbose --ci format
+
+    - name: build
+      needs: [build_pytorch, install_python_requirements]
+      run: cd ${{github.workspace}} && python cli/cli.py --verbose --ci build
+
+    - name: test
+      needs: [build_pytorch, install_python_requirements, build]
+      run: cd ${{github.workspace}} && python cli/cli.py --verbose --ci all_tests
+      

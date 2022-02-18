@@ -19,13 +19,20 @@ def execute(cmd):
 
 @click.group()
 @click.option('--verbose', is_flag=True)
+@click.option(
+    '--ci',
+    is_flag=True,
+    help='Run as continuous integration test.',
+)
 @click.pass_context
 def cli(
     ctx,
     verbose,
+    ci,
 ) -> None:
     ctx.ensure_object(dict)
     ctx.obj['VERBOSE'] = verbose
+    ctx.obj['CI'] = ci
     ctx.obj['PROJECT_ROOT'] = os.path.abspath(os.path.join(os.path.abspath(__file__), '..', '..'))
 
     if ctx.obj['VERBOSE']:
@@ -112,7 +119,7 @@ def format(
     files_to_format = list(filter(lambda path: is_cxx_file(path), files_to_format))
 
     format_command = ['clang-format', '-style=Chromium', '--Werror']
-    if dry_run:
+    if dry_run or ctx.obj['CI']:
         format_command.append('--dry-run')
     else:
         format_command.append('-i') # inplace
@@ -132,11 +139,6 @@ def format(
 
 @cli.command()
 @click.pass_context
-@click.option(
-    '--ci',
-    is_flag=True,
-    help='Run as continuous integration test.',
-)
 def all_tests(
     ctx,
     ci
@@ -147,7 +149,7 @@ def all_tests(
     for _, _, files in os.walk(test_dir):
         tests.extend(files)
 
-    if ci:
+    if ctx.obj['CI']:
         incompatible = ['LinuxWindow.spec']
         if ctx.obj['VERBOSE']:
             print(f'Running in ci mode removing tests because they require a desktop to run. {incompatible}')
