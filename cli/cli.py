@@ -45,17 +45,30 @@ def cli(
     is_flag=True,
     help='Deletes the previous build.',
 )
+@click.option(
+    '--jobs',
+    type=int,
+    help='Number of jobs (essentially threads) to use for make. If not specified will use, # of machine threads / 2 - 1 to attempt avoiding locking up the system.',
+    default=None,
+)
 @click.pass_context
 def build(
     ctx,
     clean,
+    jobs,
 ):
     ctx.obj['CLEAN'] = clean
 
     ctx.obj['BUILD_DIR'] = os.path.abspath(os.path.join(ctx.obj['PROJECT_ROOT'], 'build'))
     ctx.obj['BIN_DIR'] = os.path.abspath(os.path.join(ctx.obj['PROJECT_ROOT'], 'bin'))
     ctx.obj['PYTORCH_DIR'] = os.path.abspath(os.path.join(ctx.obj['PROJECT_ROOT'], 'vendor', 'pytorch'))
-    ctx.obj['CORE_COUNT'] = os.cpu_count()
+    ctx.obj['JOBS'] = int((os.cpu_count() / 2) - 1)
+    if jobs is not None:
+        if jobs > os.cpu_count():
+            print(f'Warning: {jobs} --jobs were requested but that\'s more than the detected number of cores \({os.cpu_count}\) using that instead.')
+            ctx.obj['JOBS'] = os.cpu_count()
+        else:
+            ctx.obj['JOBS'] = jobs
 
     if ctx.obj['VERBOSE']:
         print(f'context: {ctx.obj}')
@@ -75,8 +88,8 @@ def build(
     for out in execute(['cmake', f'-DCMAKE_PREFIX_PATH={pytorch_dir}', '..']):
         print(out, end="")
 
-    core_count = ctx.obj['CORE_COUNT']
-    for out in execute(['make', f'-j{core_count}']):
+    job_count = ctx.obj['JOBS']
+    for out in execute(['make', f'-j{job_count}']):
         print(out, end="")
 
 

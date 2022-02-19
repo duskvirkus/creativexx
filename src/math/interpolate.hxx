@@ -31,7 +31,7 @@ inline VALUE_TYPE trilinear_interpolate(VALUE_TYPE,
                                         AMOUNT_TYPE,
                                         AMOUNT_TYPE);
 
-}  // namespace renderer
+}  // namespace math
 }  // namespace creative
 
 #endif  // CREATIVEXX_LERP_H
