@@ -20,11 +20,11 @@ class MouseMovedEvent : public Event {
 
   ~MouseMovedEvent() override = default;
 
-  [[nodiscard]] EventType type() const override;
+  EventType type() const override;
 
-  [[nodiscard]] float x() const;
+  float x() const;
 
-  [[nodiscard]] float y() const;
+  float y() const;
 
  private:
   float m_x;

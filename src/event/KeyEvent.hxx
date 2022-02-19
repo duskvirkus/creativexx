@@ -12,7 +12,7 @@ class KeyEvent : public Event {
 
   KeyEvent(const KeyEvent&&) = delete;
 
-  [[nodiscard]] unsigned int key_code() const;
+  unsigned int key_code() const;
 
  protected:
   explicit KeyEvent(unsigned int key_code);

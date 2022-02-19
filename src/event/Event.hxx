@@ -14,7 +14,7 @@ class Event {
 
   virtual ~Event() = default;
 
-  [[nodiscard]] bool handled() const;
+  bool handled() const;
 
  private:
   bool m_handled;

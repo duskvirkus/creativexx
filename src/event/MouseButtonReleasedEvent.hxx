@@ -20,7 +20,7 @@ class MouseButtonReleasedEvent : public MouseButtonEvent {
 
   ~MouseButtonReleasedEvent() override = default;
 
-  [[nodiscard]] EventType type() const override;
+  EventType type() const override;
 };
 
 }  // namespace event

@@ -20,11 +20,11 @@ class MouseScrolledEvent : public Event {
 
   ~MouseScrolledEvent() override = default;
 
-  [[nodiscard]] EventType type() const override;
+  EventType type() const override;
 
-  [[nodiscard]] float x_offset() const;
+  float x_offset() const;
 
-  [[nodiscard]] float y_offset() const;
+  float y_offset() const;
 
  private:
   float m_x_offset;

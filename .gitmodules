@@ -7,3 +7,6 @@
 [submodule "vendor/string-view-lite"]
 	path = vendor/string-view-lite
 	url = https://github.com/martinmoene/string-view-lite.git
+[submodule "vendor/opencv"]
+	path = vendor/opencv
+	url = https://github.com/opencv/opencv.git

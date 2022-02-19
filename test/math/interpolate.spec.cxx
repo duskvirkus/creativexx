@@ -1,7 +1,7 @@
 #define CATCH_CONFIG_MAIN
+#include <torch/torch.h>
 #include <catch.hpp>
 #include <creativexxspec.hxx>
-#include <torch/torch.h>
 
 TEST_CASE("linear_interpolate 0.5", "[math][interpolate]") {
   REQUIRE(0.5 ==
@@ -26,9 +26,9 @@ TEST_CASE("linear_interpolate double linear", "[math][interpolate]") {
 
 TEST_CASE("linear_interpolate torch::Tensor", "[math][interpolate]") {
   uint8_t size = 2;
-  float_t *start_src = (float_t *)malloc(size * sizeof(float_t));
-  float_t *stop_src = (float_t *)malloc(size * sizeof(float_t));
-  float_t *expected_src = (float_t *)malloc(size * sizeof(float_t));
+  float_t* start_src = (float_t*)malloc(size * sizeof(float_t));
+  float_t* stop_src = (float_t*)malloc(size * sizeof(float_t));
+  float_t* expected_src = (float_t*)malloc(size * sizeof(float_t));
   start_src[0] = static_cast<float_t>(0.0);
   start_src[1] = static_cast<float_t>(1.0);
   stop_src[0] = static_cast<float_t>(1.0);
@@ -39,7 +39,9 @@ TEST_CASE("linear_interpolate torch::Tensor", "[math][interpolate]") {
   torch::Tensor stop = torch::from_blob(stop_src, size, at::kFloat);
   torch::Tensor expected = torch::from_blob(expected_src, size, at::kFloat);
 
-  torch::Tensor actual = creative::math::linear_interpolate<torch::Tensor, float_t>(start, stop, static_cast<float_t>(0.5));
+  torch::Tensor actual =
+      creative::math::linear_interpolate<torch::Tensor, float_t>(
+          start, stop, static_cast<float_t>(0.5));
 
   REQUIRE((expected == actual).sum().is_nonzero());
 }

@@ -22,7 +22,7 @@ class Texture {
   virtual ~Texture() = default;
 
  private:
-  uint32_t m_texture_id;
+  // uint32_t m_texture_id;
   torch::Tensor m_texture;
 };
 

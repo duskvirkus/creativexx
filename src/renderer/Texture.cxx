@@ -1,4 +1,4 @@
-#include "texture.hxx"
+#include "Texture.hxx"
 
 namespace creative {
 namespace renderer {

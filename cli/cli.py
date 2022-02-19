@@ -8,6 +8,9 @@ def is_cxx_file(path):
     extension = path.split('.')[-1]
     return extension == 'hxx' or extension == 'cxx'
 
+def get_default_jobs():
+    return int((os.cpu_count() / 2) - 1)
+
 def execute(cmd):
     popen = subprocess.Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True)
     for stdout_line in iter(popen.stdout.readline, ""):
@@ -24,16 +27,32 @@ def execute(cmd):
     is_flag=True,
     help='Run as continuous integration test.',
 )
+@click.option(
+    '--debug',
+    'build_type',
+    flag_value='DEBUG',
+)
+@click.option(
+    '--release',
+    'build_type',
+    flag_value='RELEASE',
+)
 @click.pass_context
 def cli(
     ctx,
     verbose,
     ci,
+    build_type,
 ) -> None:
     ctx.ensure_object(dict)
     ctx.obj['VERBOSE'] = verbose
     ctx.obj['CI'] = ci
     ctx.obj['PROJECT_ROOT'] = os.path.abspath(os.path.join(os.path.abspath(__file__), '..', '..'))
+    if build_type is not None:
+        ctx.obj['BUILD_TYPE'] = build_type
+    else:
+        print('No build_type specified setting --debug as default.')
+        ctx.obj['BUILD_TYPE'] = 'DEBUG'
 
     if ctx.obj['VERBOSE']:
         print(f'context: {ctx.obj}')
@@ -48,8 +67,9 @@ def cli(
 @click.option(
     '--jobs',
     type=int,
-    help='Number of jobs (essentially threads) to use for make. If not specified will use, # of machine threads / 2 - 1 to attempt avoiding locking up the system.',
-    default=None,
+    help='Number of jobs (essentially threads) to use for make.',
+    default=get_default_jobs(),
+    show_default=True,
 )
 @click.pass_context
 def build(
@@ -57,39 +77,32 @@ def build(
     clean,
     jobs,
 ):
-    ctx.obj['CLEAN'] = clean
+    build_dir = os.path.abspath(os.path.join(ctx.obj['PROJECT_ROOT'], 'build', ctx.obj['BUILD_TYPE'].lower()))
+    bin_dir = os.path.abspath(os.path.join(ctx.obj['PROJECT_ROOT'], 'bin', ctx.obj['BUILD_TYPE'].lower()))
 
-    ctx.obj['BUILD_DIR'] = os.path.abspath(os.path.join(ctx.obj['PROJECT_ROOT'], 'build'))
-    ctx.obj['BIN_DIR'] = os.path.abspath(os.path.join(ctx.obj['PROJECT_ROOT'], 'bin'))
-    ctx.obj['PYTORCH_DIR'] = os.path.abspath(os.path.join(ctx.obj['PROJECT_ROOT'], 'vendor', 'pytorch'))
-    ctx.obj['JOBS'] = int((os.cpu_count() / 2) - 1)
-    if jobs is not None:
-        if jobs > os.cpu_count():
-            print(f'Warning: {jobs} --jobs were requested but that\'s more than the detected number of cores \({os.cpu_count}\) using that instead.')
-            ctx.obj['JOBS'] = os.cpu_count()
-        else:
-            ctx.obj['JOBS'] = jobs
+    if clean:
+        if os.path.exists(build_dir):
+            if ctx.obj['VERBOSE']:
+                print(f'Cleaning {build_dir}')
+            shutil.rmtree(build_dir)
+        if os.path.exists(bin_dir):
+            if ctx.obj['VERBOSE']:
+                print(f'Cleaning {bin_dir}')
+            shutil.rmtree(bin_dir)
 
-    if ctx.obj['VERBOSE']:
-        print(f'context: {ctx.obj}')
+    os.makedirs(build_dir, exist_ok=True)
+    os.chdir(build_dir)
 
-    if ctx.obj['CLEAN']:
-        if ctx.obj['VERBOSE']:
-            print('Cleaning ...')
-        if os.path.exists(ctx.obj['BUILD_DIR']):
-            shutil.rmtree(ctx.obj['BUILD_DIR'])
-        if os.path.exists(ctx.obj['BIN_DIR']):
-            shutil.rmtree(ctx.obj['BIN_DIR'])
+    pytorch_dir = os.path.abspath(os.path.join(ctx.obj['PROJECT_ROOT'], 'vendor', 'pytorch'))
+    opencv_dir = os.path.abspath(os.path.join(ctx.obj['PROJECT_ROOT'], 'vendor', 'opencv', 'build'))
 
-    os.makedirs(ctx.obj['BUILD_DIR'], exist_ok=True)
-    os.chdir(ctx.obj['BUILD_DIR'])
+    # c_compiler = '-DCMAKE_C_COMPILER=gcc-4.2' -D CMAKE_CXX_COMPILER=g++-4.2
 
-    pytorch_dir = ctx.obj['PYTORCH_DIR']
-    for out in execute(['cmake', f'-DCMAKE_PREFIX_PATH={pytorch_dir}', '..']):
+    build_type = ctx.obj['BUILD_TYPE']
+    for out in execute(['cmake', f'-DCMAKE_PREFIX_PATH={pytorch_dir};{opencv_dir}', f'-DCMAKE_BUILD_TYPE={build_type}', '../..']): # 
         print(out, end="")
 
-    job_count = ctx.obj['JOBS']
-    for out in execute(['make', f'-j{job_count}']):
+    for out in execute(['make', f'-j{jobs}']):
         print(out, end="")
 
 
@@ -155,7 +168,7 @@ def format(
 def all_tests(
     ctx,
 ):
-    test_dir = os.path.join(ctx.obj['PROJECT_ROOT'], 'bin', 'test')
+    test_dir = os.path.join(ctx.obj['PROJECT_ROOT'], 'bin', ctx.obj['BUILD_TYPE'].lower(), 'test')
 
     tests = []
     for _, _, files in os.walk(test_dir):
@@ -175,6 +188,41 @@ def all_tests(
         for out in execute(test_path):
             print(out, end="")
 
+@cli.command()
+@click.option(
+    '--clean',
+    is_flag=True,
+    help='Deletes the previous build.',
+)
+@click.option(
+    '--jobs',
+    type=int,
+    help='Number of jobs (essentially threads) to use for make.',
+    default=get_default_jobs(),
+    show_default=True,
+)
+@click.pass_context
+def opencv_build(
+    ctx,
+    clean,
+    jobs,
+):
+    opencv_build_dir = os.path.join(ctx.obj['PROJECT_ROOT'], 'vendor', 'opencv', 'build')
+
+    if clean:
+        if ctx.obj['VERBOSE']:
+            print('Cleaning ...')
+        if os.path.exists(opencv_build_dir):
+            shutil.rmtree(opencv_build_dir)
+
+    os.makedirs(opencv_build_dir, exist_ok=True)
+    os.chdir(opencv_build_dir)
+
+    for out in execute(['cmake', '..']):
+        print(out, end="")
+
+    for out in execute(['make', f'-j{jobs}']):
+        print(out, end="")
     
 if __name__ == '__main__':
     cli(obj={})

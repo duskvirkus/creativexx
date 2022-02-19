@@ -11,7 +11,7 @@ class MouseButtonEvent : public Event {
   MouseButtonEvent(const MouseButtonEvent&) = default;
   MouseButtonEvent(const MouseButtonEvent&&) = delete;
 
-  [[nodiscard]] int button() const;
+  int button() const;
 
  protected:
   explicit MouseButtonEvent(int button);

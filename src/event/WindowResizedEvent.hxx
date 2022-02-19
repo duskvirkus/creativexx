@@ -20,11 +20,11 @@ class WindowResizedEvent : public Event {
 
   ~WindowResizedEvent() override = default;
 
-  [[nodiscard]] EventType type() const override;
+  EventType type() const override;
 
-  [[nodiscard]] unsigned int width() const;
+  unsigned int width() const;
 
-  [[nodiscard]] unsigned int height() const;
+  unsigned int height() const;
 
  private:
   unsigned int m_width;

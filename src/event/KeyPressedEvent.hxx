@@ -20,9 +20,9 @@ class KeyPressedEvent : public KeyEvent {
 
   ~KeyPressedEvent() override = default;
 
-  [[nodiscard]] EventType type() const override;
+  EventType type() const override;
 
-  [[nodiscard]] bool repeat() const;
+  bool repeat() const;
 
  private:
   bool m_repeat;
