@@ -1,8 +1,8 @@
 
 add_executable(
         Sandbox
-        src/Sandbox.cpp
-        src/Sandbox.h
+        src/Sandbox.cxx
+        src/Sandbox.hxx
         )
 
-target_link_libraries(Sandbox PRIVATE CreativeXX)
+target_link_libraries(Sandbox PRIVATE creativexx)

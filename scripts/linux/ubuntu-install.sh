@@ -1,12 +1,14 @@
 #!/bin/bash
 set -e
 
-sudo apt install -y xorg-dev
-sudo apt install -y libxrandr-dev
-sudo apt install -y libxinerama-dev
-sudo apt install -y libxcursor-dev
-sudo apt install -y libxi-dev
-sudo apt install -y libgl1-mesa-dev
-sudo apt install -y libglu1-mesa-dev
-sudo apt install -y freeglut3-dev
-sudo apt install -y mesa-common-dev
+sudo apt install -y \
+    xorg-dev \
+    libxrandr-dev \
+    libxinerama-dev \
+    libxcursor-dev \
+    libxi-dev \
+    libgl1-mesa-dev \
+    libglu1-mesa-dev \
+    freeglut3-dev \
+    mesa-common-dev \
+    clang-format

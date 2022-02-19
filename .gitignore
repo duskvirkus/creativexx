@@ -48,6 +48,8 @@ _deps
 .idea
 .cbp
 cmake-build-debug
+.vscode
+build
 
 # output dirs
 bin
