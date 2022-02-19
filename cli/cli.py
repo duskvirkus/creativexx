@@ -154,7 +154,6 @@ def format(
 @click.pass_context
 def all_tests(
     ctx,
-    ci
 ):
     test_dir = os.path.join(ctx.obj['PROJECT_ROOT'], 'bin', 'test')
 
