@@ -52,6 +52,9 @@ jobs:
     - name: pytorch_build
       working-directory: ${{github.workspace}}/vendor/pytorch
       run: python3 setup.py develop
+
+    - name: opencv_build
+      run: python3 ${{github.workspace}}/cli/cli.py --verbose --ci opencv-build
   
     - name: build
       run: python3 ${{github.workspace}}/cli/cli.py --verbose --ci build
