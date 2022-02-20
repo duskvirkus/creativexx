@@ -9,7 +9,7 @@
 namespace creative {
 namespace image {
 
-class Image {
+class Image : renderer::Texture {
  public:
   Image(const nonstd::string_view&);
 
@@ -23,11 +23,22 @@ class Image {
 
   virtual ~Image() = default;
 
+  // size_t width() const;
+
+  // size_t height() const;
+
+  // size_t channels() const;
+
+  // friend std::ostream& operator<<(std::ostream&, const
+  // creative::image::Image&);
+
  private:
-  std::unique_ptr<renderer::Texture> m_texture;
+  // std::unique_ptr<renderer::Texture> m_texture;
 };
 
 }  // namespace image
 }  // namespace creative
+
+// std::ostream& operator<<(std::ostream&, const creative::image::Image&);
 
 #endif  // CREATIVEXX_IMAGE_H

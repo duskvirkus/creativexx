@@ -5,10 +5,14 @@ add_library(
         application/Application.cxx
         application/Application.hxx
         core/entry.hxx
+        core/globals.hxx
+        core/globals.cxx
         core/init.cxx
         core/init.hxx
         image/Image.cxx
         image/Image.hxx
+        io/Path.cxx
+        io/Path.hxx
         log/Log.cxx
         log/Log.hxx
         log/Logger.cxx

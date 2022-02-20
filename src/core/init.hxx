@@ -5,7 +5,7 @@
 
 namespace creative {
 
-void initialize();
+void initialize(int argc, char** argv);
 
 }
 

@@ -9,6 +9,8 @@ namespace renderer {
 
 class Texture {
  public:
+  Texture();
+
   Texture(const torch::Tensor&);
 
   Texture(const Texture&) = delete;
@@ -19,14 +21,18 @@ class Texture {
 
   Texture& operator=(const Texture&&) = delete;
 
-  virtual ~Texture() = default;
+  virtual ~Texture();
 
- private:
+  // friend std::ostream& operator<<(std::ostream&, const Texture&);
+
+ protected:
   // uint32_t m_texture_id;
-  torch::Tensor m_texture;
+  torch::Tensor* m_tensor_ptr;
 };
 
 }  // namespace renderer
 }  // namespace creative
+
+// std::ostream& operator<<(std::ostream&, const creative::renderer::Texture&);
 
 #endif  // CREATIVEXX_TEXTURE_H

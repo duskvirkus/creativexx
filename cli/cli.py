@@ -96,13 +96,16 @@ def build(
     pytorch_dir = os.path.abspath(os.path.join(ctx.obj['PROJECT_ROOT'], 'vendor', 'pytorch'))
     opencv_dir = os.path.abspath(os.path.join(ctx.obj['PROJECT_ROOT'], 'vendor', 'opencv', 'build'))
 
-    # c_compiler = '-DCMAKE_C_COMPILER=gcc-4.2' -D CMAKE_CXX_COMPILER=g++-4.2
-
     build_type = ctx.obj['BUILD_TYPE']
     for out in execute(['cmake', f'-DCMAKE_PREFIX_PATH={pytorch_dir};{opencv_dir}', f'-DCMAKE_BUILD_TYPE={build_type}', '../..']): # 
         print(out, end="")
 
     for out in execute(['make', f'-j{jobs}']):
+        print(out, end="")
+
+    assets_src = os.path.abspath(os.path.join(ctx.obj['PROJECT_ROOT'], 'assets'))
+    assets_dest = os.path.abspath(os.path.join(bin_dir, 'test'));
+    for out in execute(['cp', '-r', f'{assets_src}', f'{assets_dest}']):
         print(out, end="")
 
 
@@ -138,7 +141,7 @@ def format(
     
     files_to_format = []
     for dir in dirs_to_format:
-        for root, subdirs, files in os.walk(os.path.join(ctx.obj['PROJECT_ROOT'], dir)):
+        for root, _, files in os.walk(os.path.join(ctx.obj['PROJECT_ROOT'], dir)):
             for f in files:
                 files_to_format.append(os.path.join(root, f))
 
@@ -171,8 +174,9 @@ def all_tests(
     test_dir = os.path.join(ctx.obj['PROJECT_ROOT'], 'bin', ctx.obj['BUILD_TYPE'].lower(), 'test')
 
     tests = []
-    for _, _, files in os.walk(test_dir):
-        tests.extend(files)
+    for root, subdirs, files in os.walk(test_dir):
+        if root.split('/')[-1] != 'assets':
+            tests.extend(files)
 
     if ctx.obj['CI']:
         incompatible = ['LinuxWindow.spec']
